@@ -4,6 +4,7 @@ RSpec.describe User, type: :model do
   describe 'relationships' do
     it { should have_many :items }
     it { should have_many :orders }
+    it { should have_many :user_addresses }
   end
 
   describe 'validations' do
