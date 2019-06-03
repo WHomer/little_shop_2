@@ -8,14 +8,18 @@ RSpec.describe 'New user form' do
         @user_1 = User.create!(name: "default_user", role: 0, active: true, password_digest: "8320280282", address: "333", city: "Denver", state: "CO", zip: "80000", email: "default_user@gmail.com" )
       end
 
-      it 'I can register as a new user' do
+      xit 'I can register as a new user' do
+        # change when you determine how the show page will look. 
+        ## assuming, you may show all addresses? 
         visit register_path
 
         fill_in 'Name', with: 'User'
-        fill_in 'Address', with: '1111 South One St.'
+        fill_in 'Nickname', with: 'Home'
+        fill_in 'Street address 1', with: '1111 South One St.'
         fill_in 'City', with: 'Denver'
-        fill_in 'State', with: 'CO'
+        fill_in 'State province', with: 'CO'
         fill_in 'Zip', with: '80000'
+        fill_in 'Phone number', with: '8154775555'
         fill_in 'Email', with: 'user@gmail.com'
         fill_in 'Password', with: 'password'
         fill_in 'Confirm password', with: 'password'
@@ -27,7 +31,7 @@ RSpec.describe 'New user form' do
         expect(current_path).to eq("/profile")
 
         expect(page).to have_content("#{new_user.name}")
-        expect(page).to have_content("Address: #{new_user.address}")
+        expect(page).to have_content("Address: #{new_user.user_addresses.first.street_address_1}")
         expect(page).to have_content("City: #{new_user.city}")
         expect(page).to have_content("Zip Code: #{new_user.zip}")
         expect(page).to have_content("Email: #{new_user.email}")
@@ -38,10 +42,12 @@ RSpec.describe 'New user form' do
         visit register_path
 
         fill_in 'Name', with: 'User'
-        fill_in 'Address', with: '1111 South One St.'
+        fill_in 'Nickname', with: 'Home'
+        fill_in 'Street address 1', with: '1111 South One St.'
         fill_in 'City', with: 'Denver'
-        fill_in 'State', with: 'CO'
+        fill_in 'State province', with: 'CO'
         fill_in 'Zip', with: '80000'
+        fill_in 'Phone number', with: '8154775555'
         fill_in 'Email', with: 'user@gmail.com'
         fill_in 'Password', with: 'password'
         fill_in 'Confirm password', with: 'password3'
@@ -59,11 +65,13 @@ RSpec.describe 'New user form' do
 
         visit register_path
 
-        fill_in 'Name', with: 'User_2'
-        fill_in 'Address', with: '1111 South One St.'
+        fill_in 'Name', with: 'User'
+        fill_in 'Nickname', with: 'Home'
+        fill_in 'Street address 1', with: '1111 South One St.'
         fill_in 'City', with: 'Denver'
-        fill_in 'State', with: 'CO'
+        fill_in 'State province', with: 'CO'
         fill_in 'Zip', with: '80000'
+        fill_in 'Phone number', with: '8154775555'
         fill_in 'Email', with: 'user_1@gmail.com'
         fill_in 'Password', with: 'password'
         fill_in 'Confirm password', with: 'password'
@@ -78,9 +86,9 @@ RSpec.describe 'New user form' do
 
     it 'Will not let me register if fields are missing' do
       visit register_path
-
+      
       fill_in 'Name', with: ''
-      fill_in 'Address', with: '1111 South One St.'
+      fill_in 'Street address 1', with: '1111 South One St.'
       fill_in 'City', with: 'Denver'
       fill_in 'State', with: ''
       fill_in 'Zip', with: '80000'
@@ -92,7 +100,7 @@ RSpec.describe 'New user form' do
 
       expect(current_path).to eq(register_path)
       expect(page).to have_content("Name can't be blank")
-      expect(page).to have_content("State can't be blank")
+      expect(page).to have_content("state province can't be blank")
       expect(page).to have_content("Password can't be blank")
     end
   end

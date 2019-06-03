@@ -3,13 +3,15 @@ class User < ApplicationRecord
   has_many :orders
   has_many :user_addresses
 
-  validates_presence_of :password_digest, :name, :address, :city, :state, :zip
+  validates_presence_of :password_digest, :name
 
   validates :email, presence: true, uniqueness: true
 
   has_secure_password
 
   enum role: ["default", "merchant", "admin"]
+
+  accepts_nested_attributes_for :user_addresses
 
   def best_customer_items
     order = OrderItem.joins("JOIN orders ON orders.id=order_items.order_id")

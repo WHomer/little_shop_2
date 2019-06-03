@@ -2,8 +2,8 @@ class UserAddress < ApplicationRecord
   belongs_to :user
 
   validates_presence_of :nickname,
-                        :first_name,
-                        :last_name,
+                        # :first_name,
+                        # :last_name,
                         :street_address_1,
                         :city,
                         :state_province,
