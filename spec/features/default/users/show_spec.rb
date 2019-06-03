@@ -4,8 +4,8 @@ RSpec.describe 'User show page', type: :feature do
   context 'As a regular user' do
     describe 'When I visit my own profile page' do
       before :each do
-        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-
+        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+        @user.user_addresses.create!(nickname: "home", street_address_1: "123 Test St", street_address_2: "test", city: "Testville", state_province: "Test", zip_code: "01234", phone_number:'8154775555')
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
       end
 
@@ -16,10 +16,10 @@ RSpec.describe 'User show page', type: :feature do
         expect(page).to have_content(@user.role)
         expect(page).to have_content(@user.active)
         expect(page).to have_content(@user.name)
-        expect(page).to have_content(@user.address)
-        expect(page).to have_content(@user.city)
-        expect(page).to have_content(@user.state)
-        expect(page).to have_content(@user.zip)
+        expect(page).to have_content(@user.user_addresses.first.street_address_1)
+        expect(page).to have_content(@user.user_addresses.first.city)
+        expect(page).to have_content(@user.user_addresses.first.state_province)
+        expect(page).to have_content(@user.user_addresses.first.zip_code)
 
         expect(page).to_not have_content(@user.password_digest)
       end

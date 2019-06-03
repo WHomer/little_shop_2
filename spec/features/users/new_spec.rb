@@ -8,7 +8,7 @@ RSpec.describe 'New user form' do
         @user_1 = User.create!(name: "default_user", role: 0, active: true, password_digest: "8320280282", address: "333", city: "Denver", state: "CO", zip: "80000", email: "default_user@gmail.com" )
       end
 
-      xit 'I can register as a new user' do
+      it 'I can register as a new user' do
         # change when you determine how the show page will look. 
         ## assuming, you may show all addresses? 
         visit register_path
@@ -29,11 +29,11 @@ RSpec.describe 'New user form' do
         new_user = User.last
 
         expect(current_path).to eq("/profile")
-
+        
         expect(page).to have_content("#{new_user.name}")
-        expect(page).to have_content("Address: #{new_user.user_addresses.first.street_address_1}")
-        expect(page).to have_content("City: #{new_user.city}")
-        expect(page).to have_content("Zip Code: #{new_user.zip}")
+        expect(page).to have_content("Address Line 1: #{new_user.user_addresses.first.street_address_1}")
+        expect(page).to have_content("City: #{new_user.user_addresses.first.city}")
+        expect(page).to have_content("Zip Code: #{new_user.user_addresses.first.zip_code}")
         expect(page).to have_content("Email: #{new_user.email}")
         expect(page).to have_content("You are now registered and logged in.")
       end

@@ -1,17 +1,53 @@
 
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header"> 
+         <h2><%= @user.name %></h2> 
+        </div>
+        <div class="card-body">
+          <p>Email: <%= @user.email %></p>
+          <p>Role: <%= @user.role %></p>
+          <p>Active: <%= @user.active %></p>
+          <%= link_to "Edit Profile", profile_edit_path %>
 
-<h2><%= @user.name %></h2>
+          <% if @user.orders.length > 0 %>
+            <%= link_to "My Orders", profile_orders_path %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<p>Email: <%= @user.email %></p>
-<p>Role: <%= @user.role %></p>
-<p>Active: <%= @user.active %></p>
-<p>Address: <%= @user.address %></p>
-<p>City: <%= @user.city %></p>
-<p>State: <%= @user.state %></p>
-<p>Zip Code: <%= @user.zip %></p>
-
-<%= link_to "Edit Profile", profile_edit_path %>
-
-<% if @user.orders.length > 0 %>
-  <%= link_to "My Orders", profile_orders_path %>
-<% end %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header"> 
+          <h5>My Addresses</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <% @user.user_addresses.each do |address| %>
+              <div class="col-lg-6">
+                <div class="card border-default">
+                  <div class="card-header">
+                    <%= address.nickname %>
+                  </div>
+                  <div class="card-body">
+                    <p>Address Line 1: <%= address.street_address_1 %></p>
+                    <p>Address Line 2: <%= address.street_address_2 %></p>
+                    <p>City: <%= address.city %></p>
+                    <p>State: <%= address.state_province %></p>
+                    <p>Zip Code: <%= address.zip_code %></p>
+                    <p>Phone Number: <%= address.phone_number %></p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
