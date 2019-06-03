@@ -6,4 +6,22 @@ class Default::UserAddressesController < Default::BaseController
     end
     redirect_to profile_path
   end
+
+  def new
+    @user_address = UserAddress.new
+  end
+
+  def create
+    user = current_user
+    address = user.user_addresses.create(address_params)
+    
+    flash[:notice] = "Address Added to Profile"
+    redirect_to profile_path
+  end
+
+
+  private
+  def address_params
+    params.require(:user_address).permit(:nickname, :street_address_1, :street_address_2, :city, :state_province, :zip_code, :phone_number)
+  end
 end
