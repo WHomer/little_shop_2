@@ -9,6 +9,31 @@ RSpec.describe 'User show page', type: :feature do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
       end
 
+      xit 'has a link to add a new address' do
+        visit profile_path
+
+        expect(page).to have_link("Add Address")
+        within ".address-#{@user.user_addresses.first.id}" do
+
+        end
+      end
+
+      it 'has a link to remove a address' do
+        visit profile_path
+        
+        within ".address-#{@user.user_addresses.first.id}" do
+          expect(page).to have_button("Remove Address")
+          # require 'pry'; binding.pry
+          click_button "Remove Address" 
+
+          expect(current_path).to eq(profile_path)
+          expect(page).to have_content(@user.user_addresses.first.street_address_1)
+          expect(page).to have_content(@user.user_addresses.first.city)
+          expect(page).to have_content(@user.user_addresses.first.state_province)
+          expect(page).to have_content(@user.user_addresses.first.zip_code)
+        end
+      end
+
       it 'Then I can see all my information, except my password' do
         visit profile_path
 
