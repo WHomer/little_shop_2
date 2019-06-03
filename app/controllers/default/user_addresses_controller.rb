@@ -7,6 +7,17 @@ class Default::UserAddressesController < Default::BaseController
     redirect_to profile_path
   end
 
+  def edit
+    @user_address = UserAddress.find_by(id: params[:id])
+  end
+
+  def update
+    user = current_user
+    address = user.user_addresses.update(address_params)
+    flash[:notice] = "Address, #{address.first.nickname}, has been updated"
+    redirect_to profile_path
+  end
+
   def new
     @user_address = UserAddress.new
   end
@@ -14,7 +25,6 @@ class Default::UserAddressesController < Default::BaseController
   def create
     user = current_user
     address = user.user_addresses.create(address_params)
-    
     flash[:notice] = "Address Added to Profile"
     redirect_to profile_path
   end
