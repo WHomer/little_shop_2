@@ -1,16 +1,31 @@
-<h2><%= @user.name %>'s Orders</h2>
 
-<% if @orders.count > 0 %>
-  <% @orders.each do |order| %>
-    <section id="order-<%= order.id %>">
-      <%= link_to "Order ID: #{order.id}", profile_order_path(order) %>
-      <p>Date Made: <%= order.date_made %></p>
-      <p>Last Updated: <%= order.last_updated %></p>
-      <p>Current Status: <%= order.status.capitalize %></p>
-      <p>Number of Items: <%= order.item_count %></p>
-      <p>Grand Total: <%= number_to_currency(order.grand_total, unit: "$") %></p>
-    </section>
-  <% end %>
-<% else %>
-  <p>You haven't made any orders yet!</p>
-<% end %>
+<div class="container">
+  <h2><%= @user.name %>'s Orders</h2>
+
+  <div class="row">
+    <% if @orders.count > 0 %>
+      <% @orders.each do |order| %>
+        <div class="col-md-4">
+          <section id="order-<%= order.id %>">
+            <%= link_to "Order ID: #{order.id}", profile_order_path(order) %>
+            <p>Date Made: <%= order.date_made %></p>
+            <p><strong>Shipping Address: <%= order.user_address.nickname %> </strong>
+              <p>
+                <%= order.user_address.street_address_1 %> <br/>
+                <%= order.user_address.street_address_2 %><br/>
+                <%= order.user_address.city %>, <%= order.user_address.state_province %>  <%= order.user_address.zip_code %><br/>
+                <%= order.user_address.phone_number %>
+              </p>
+            </p>
+            <p>Last Updated: <%= order.last_updated %></p>
+            <p>Current Status: <%= order.status.capitalize %></p>
+            <p>Number of Items: <%= order.item_count %></p>
+            <p>Grand Total: <%= number_to_currency(order.grand_total, unit: "$") %></p>
+          </section>
+        </div>
+      <% end %>
+    <% else %>
+      <p>You haven't made any orders yet!</p>
+    <% end %>
+  </div>
+</div>
