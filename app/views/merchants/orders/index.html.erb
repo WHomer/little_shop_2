@@ -5,10 +5,12 @@
 <p>Email: <%= @user.email %></p>
 <p>Role: <%= @user.role %></p>
 <p>Active: <%= @user.active %></p>
-<p>Address: <%= @user.address %></p>
-<p>City: <%= @user.city %></p>
-<p>State: <%= @user.state %></p>
-<p>Zip Code: <%= @user.zip %></p>
+<% if false %>
+  <p>Address: <%= @user.address %></p>
+  <p>City: <%= @user.city %></p>
+  <p>State: <%= @user.state %></p>
+  <p>Zip Code: <%= @user.zip %></p>
+<% end %>
 
 <% if !@user.items.empty? && !@user.top_items_sold(5).empty?  %>
 
@@ -42,7 +44,7 @@
       <p class="card-text">
         <ol>
           <% @user.top_3_states.each do |item| %>
-            <li><strong><%= item.state %>:</strong> <%= item.total_ordered %> Items Sold </li>
+            <li><strong><%= item.state_province %>:</strong> <%= item.total_ordered %> Items Sold </li>
           <% end %>
         </ol>
       </p>
@@ -53,7 +55,7 @@
       <p class="card-text">
         <ol>
           <% @user.top_3_city_state.each do |item| %>
-            <li><strong><%= item.city %>, <%= item.state %>:</strong> <%= item.total_ordered %> Items Sold </li>
+            <li><strong><%= item.city %>, <%= item.state_province %>:</strong> <%= item.total_ordered %> Items Sold </li>
           <% end %>
         </ol>
       </p>

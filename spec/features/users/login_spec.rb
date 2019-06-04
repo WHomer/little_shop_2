@@ -6,11 +6,16 @@ RSpec.describe 'User can login' do
 
     before :each do
       @password = BCrypt::Password.create("password", cost: 4)
-      @regular_user = User.create(name: "Regular1", password_digest: @password, role: 0, active: true, address: "88888", city: "Denver", state: "CO", zip: "88888", email: "reg_1@gmail.com")
+      @regular_user = User.create!(name: "Regular1", password_digest: @password, role: 0, active: true, email: "reg_1@gmail.com")
+      @regular_user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+
       @password2 = BCrypt::Password.create("password", cost: 4)
-      @merchant_user = User.create(name: "Merchant1", password_digest: @password2, role: 1, active: true, address: "88888", city: "Denver", state: "CO", zip: "88888", email: "merchant_1@gmail.com")
+      @merchant_user = User.create(name: "Merchant1", password_digest: @password2, role: 1, active: true, email: "merchant_1@gmail.com")
+      @merchant_user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+
       @password3 = BCrypt::Password.create("password", cost: 4)
-      @merchant_user = User.create(name: "Admin1", password_digest: @password3, role: 2, active: true, address: "88888", city: "Denver", state: "CO", zip: "88888", email: "admin_1@gmail.com")
+      @merchant_user = User.create(name: "Admin1", password_digest: @password3, role: 2, active: true, email: "admin_1@gmail.com")
+      @merchant_user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
     end
 
     it 'As a regular user, I can login' do
@@ -68,7 +73,8 @@ RSpec.describe 'User can login' do
   context 'As a regular user' do
     describe 'When I visit the login page' do
       before :each do
-        @regular_user = User.create(name: "Regular1", password_digest: @password, role: 0, active: true, address: "88888", city: "Denver", state: "CO", zip: "88888", email: "reg_1@gmail.com")
+        @regular_user = User.create!(name: "Regular1", password: 'test', role: 0, active: true, email: "reg_1@gmail.com")
+        @regular_user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@regular_user)
       end
 
@@ -84,7 +90,8 @@ RSpec.describe 'User can login' do
   context 'As a merchant user' do
     describe 'When I visit the login page' do
       before :each do
-        @merchant = User.create!(name: "Merchant", password_digest: "password", role: 1, active: true, address: "88888", city: "Denver", state: "CO", zip: "88888", email: "merchant@gmail.com")
+        @merchant = User.create!(name: "Merchant", password_digest: "password", role: 1, active: true, email: "merchant@gmail.com")
+        @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
       end
 
@@ -100,7 +107,8 @@ RSpec.describe 'User can login' do
   context 'As a admin user' do
     describe 'When I visit the login page' do
       before :each do
-        @admin = User.create!(name: "Admin", password_digest: "password", role: 2, active: true, address: "88888", city: "Denver", state: "CO", zip: "88888", email: "merchant@gmail.com")
+        @admin = User.create!(name: "Admin", password_digest: "password", role: 2, active: true, email: "merchant@gmail.com")
+        @admin.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
       end
 

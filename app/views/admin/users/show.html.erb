@@ -3,10 +3,12 @@
 <p>Email: <%= @user.email %></p>
 <p>Role: <%= @user.role %></p>
 <p>Active: <%= @user.active %></p>
+<% if false %>
 <p>Address: <%= @user.address %></p>
 <p>City: <%= @user.city %></p>
 <p>State: <%= @user.state %></p>
 <p>Zip Code: <%= @user.zip %></p>
+<% end %>
 
 <%= link_to "Upgrade to Merchant", admin_merchant_edit_path({id: @user.id, request: :upgrade_to_merchant}), :method => :patch, class:"btn btn-primary" %>
 

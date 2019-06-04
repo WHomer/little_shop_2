@@ -5,7 +5,7 @@ RSpec.describe 'User show page', type: :feature do
     describe 'When I visit my own profile page' do
       before :each do
         @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
-        @user.user_addresses.create!(nickname: "home", street_address_1: "123 Test St", street_address_2: "test", city: "Testville", state_province: "Test", zip_code: "01234", phone_number:'8154775555')
+        @address = @user.user_addresses.create!(nickname: "home", street_address_1: "123 Test St", street_address_2: "test", city: "Testville", state_province: "Test", zip_code: "01234", phone_number:'8154775555')
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
       end
 
@@ -61,7 +61,7 @@ RSpec.describe 'User show page', type: :feature do
 
       describe 'And I have orders placed in the system' do
         it 'I can click on My Orders and navigate to profile/orders' do
-          order_1 = @user.orders.create!(status: 0)
+          order_1 = @user.orders.create!(status: 0, user_address: @address)
 
           visit profile_path
 

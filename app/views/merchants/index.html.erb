@@ -24,14 +24,14 @@
 <h4>Most Ordered From States</h4>
 <% @top_3_states_by_order.each do |orders| %>
   <section class='top-states'>
-    <p><%= orders.state %></p>
-    <p>Orders: <%= orders.count %></p>
+    <p><%= orders.state_province %></p>
+    <p>Orders: <%= orders.total_ordered %></p>
   </section>
 <% end %>
 <h4>Most Ordered From Cities</h4>
 <% @top_3_cities_by_order.each do |orders| %>
   <section class='top-cities'>
-    <p><%= orders.city %>, <%= orders.state %></p>
+    <p><%= orders.city %>, <%= orders.state_province %></p>
     <p>Orders: <%= orders.count %></p>
   </section>
 <% end %>
@@ -55,7 +55,9 @@
           <% end %>
         </div>
         <ul class="list-group list-group-flush">
+          <% if false %>
           <li class="list-group-item text-center">Location: <%= merchant.city %>, <%= merchant.state %></li>
+          <% end %>
           <li class="list-group-item text-center">Joined: <%= merchant.created_at.strftime("%B %d, %Y") %></li>
           <% if current_admin? && merchant.active? %>
             <li class="list-group-item text-center"><%= link_to "Disable", "/admin/merchant/disable/#{merchant.id}", :method=> :patch %></li>

@@ -5,19 +5,21 @@ RSpec.describe 'As a Registered User', type: :feature do
 
   describe 'When I visit of my Orders show pages' do
     before :each do
-      @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
+      @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+      @address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
 
       @merchant_1 = create(:user)
+      @merchant_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @merchant_2 = create(:user)
-
+      @merchant_2.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @item_1 = create(:item, user: @merchant_1)
       @item_2 = create(:item, user: @merchant_1)
       @item_3 = create(:item, user: @merchant_2)
 
       travel_to Time.zone.local(2019, 04, 11, 8, 00, 00)
-      @order_1 = create(:order, user: @user)
+      @order_1 = create(:order, user: @user, user_address: @address)
       travel_to Time.zone.local(2019, 04, 12, 8, 00, 00)
-      @order_1.update(status: 2)
+      @order_1.update(status: 2, user_address: @address)
       travel_back
 
       @order_item_1 = create(:order_item, order: @order_1, item: @item_1)
@@ -63,7 +65,7 @@ RSpec.describe 'As a Registered User', type: :feature do
     end
 
     it 'I can cancel the order if it is still pending' do
-      @order_1.update!(status: :pending)
+      @order_1.update!(status: :pending, user_address: @address)
       @item_2.update!(inventory: 3)
       @order_item_2.update!(fulfilled: true)
       @item_2.reload

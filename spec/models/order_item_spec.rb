@@ -13,13 +13,14 @@ RSpec.describe OrderItem, type: :model do
 
   describe 'instance methods' do
     before :each do
-      @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 1, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-
+      @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 1, active: true, name: "Testy McTesterson")
+      address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @merchant_1 = create(:user)
+      @merchant_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
 
       @item_1 = create(:item, user: @merchant_1)
 
-      @order_1 = create(:order, user: @user)
+      @order_1 = create(:order, user: @user, user_address: address)
 
       @order_item_1 = create(:order_item, order: @order_1, item: @item_1, quantity: 2)
     end

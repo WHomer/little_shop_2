@@ -1,17 +1,14 @@
 require 'rails_helper'
 
-# As a registered user, merchant, or admin
-# When I visit the logout path
-# I am redirected to the welcome / home page of the site
-# And I see a flash message that indicates I am logged out
-# Any items I had in my shopping cart are deleted
-
 RSpec.describe 'when logging out' do
 
   before :each do
     @user = create(:user, email: 'reg@gmail.com', password: 'password', role: 0)
+    address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
     @merchant = create(:user, email: 'merchant@gmail.com', password: 'password', role: 1)
+    @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
     @admin = create(:user, email: 'admin@gmail.com', password: 'password', role: 2)
+    @admin.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
     @item = create(:item, user: @merchant)
   end
 

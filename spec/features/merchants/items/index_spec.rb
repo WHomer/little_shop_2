@@ -7,7 +7,9 @@ RSpec.describe 'As a merchant' do
 
     before :each do
       @merchant_1 = create(:user, role: 1)
+      @merchant_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @merchant_2 = create(:user, role: 1)
+      @merchant_2.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @item_1 = create(:item, user: @merchant_1)
       @item_2 = create(:item, user: @merchant_1)
       @item_3 = create(:item, user: @merchant_1)
@@ -58,14 +60,17 @@ RSpec.describe 'As a merchant' do
 
     before :each do
       @merchant_1 = create(:user, role: 1)
+      @merchant_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @merchant_2 = create(:user, role: 1)
+      @merchant_2.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @item_1 = create(:item, user: @merchant_1)
       @item_2 = create(:item, user: @merchant_1)
       @item_3 = create(:item, user: @merchant_1, active: false)
       @item_4 = create(:item, user: @merchant_2)
       @item_5 = create(:item, user: @merchant_2)
       @user = create(:user)
-      order_1 = create(:order, user: @user)
+      address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+      order_1 = create(:order, user: @user, user_address: address)
       OrderItem.create!(item: @item_2, order: order_1, quantity: 12, price: 1.99, fulfilled: true)
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_1)
@@ -396,17 +401,3 @@ RSpec.describe 'As a merchant' do
     end
   end
 end
-
-
-
-# The form is re-populated with all of this item's information
-# I can change any information, but all of the rules for adding a new item still apply:
-# - name and description cannot be blank
-# - price cannot be less than $0.00
-# - inventory must be 0 or greater
-#
-# When I submit the form
-# I am taken back to my items page
-# I see a flash message indicating my item is updated
-# I see the item's new information on the page, and it maintains its previous enabled/disabled state
-# If I left the image field blank, I see a placeholder image for the thumbnail

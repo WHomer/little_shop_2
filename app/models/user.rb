@@ -36,24 +36,11 @@ class User < ApplicationRecord
   end
 
   def top_3_city_state
-    self.items
-        .joins(:orders)
-        .joins("JOIN users ON users.id = orders.user_id")
-        .where("orders.status=2")
-        .select("sum(order_items.quantity) AS total_ordered, users.state, users.city")
-        .group("users.state")
-        .group("users.city")
-        .order("total_ordered desc")
-        .limit(3)
+    self.items.joins(:orders).joins("JOIN users ON users.id = orders.user_id").joins("JOIN user_addresses ON orders.user_address_id = user_addresses.id").where("orders.status=2").select("sum(order_items.quantity) AS total_ordered, user_addresses.state_province, user_addresses.city").group("user_addresses.state_province").group("user_addresses.city").order("total_ordered desc").limit(3)
   end
 
  def top_3_states
-    User.select("users.state, sum(order_items.quantity) AS total_ordered")
-    .joins(orders: :items)
-    .where("orders.status = 2 AND items.user_id = #{self.id} ")
-    .group("users.state")
-    .order("total_ordered DESC")
-    .limit(3)
+    User.select("user_addresses.state_province, sum(order_items.quantity) AS total_ordered").joins(orders: :items).joins(:user_addresses).where("orders.status = 2 AND items.user_id = #{self.id} ").group("user_addresses.state_province").order("total_ordered DESC").limit(3)
   end
 
   def top_items_sold(limit)
@@ -127,24 +114,11 @@ class User < ApplicationRecord
   end
 
   def self.top_3_states
-    self.joins(items: :order_items)
-        .joins('JOIN orders ON order_items.order_id=orders.id')
-        .select('count(orders.*), users.state')
-        .where('orders.status=2 AND users.role=1')
-        .group(:state)
-        .order(count: :desc)
-        .limit(3)
+    select("user_addresses.state_province, count(orders.*) AS total_ordered").joins(orders: :items).joins(:user_addresses).where("orders.status = 2").group("user_addresses.state_province").order("total_ordered DESC").limit(3)
   end
 
   def self.top_3_cities
-    self.joins(items: :order_items)
-        .joins('JOIN orders ON order_items.order_id=orders.id')
-        .select('count(orders.*), users.state, users.city')
-        .where('orders.status=2 AND users.role=1')
-        .group(:state)
-        .group(:city)
-        .order(count: :desc)
-        .limit(3)
+    joins(items: :order_items).joins('JOIN orders ON order_items.order_id=orders.id').joins("JOIN user_addresses ON orders.user_address_id = user_addresses.id").where("orders.status=2  AND users.role=1").select("count(orders.*), user_addresses.state_province, user_addresses.city").group("user_addresses.state_province").group("user_addresses.city").order(count: :desc).limit(3)
   end
 
   def top_users

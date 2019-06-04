@@ -71,7 +71,8 @@ RSpec.describe 'within main navigation' do
 
   context 'as a registered user' do
     before :each do
-      @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
+      @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+      address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
 
@@ -153,8 +154,8 @@ RSpec.describe 'within main navigation' do
     describe 'Navbar includes the following' do
 
       before :each do
-        @user_1 = User.create!(email: "test@test.com", password_digest: "t3s7", role: 1, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-
+        @user_1 = User.create!(email: "test@test.com", password_digest: "t3s7", role: 1, active: true, name: "Testy McTesterson")
+        address = @user_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user_1)
       end
 
@@ -195,8 +196,8 @@ RSpec.describe 'within main navigation' do
     describe 'Navbar includes the following' do
 
       before :each do
-        @user_1 = User.create!(email: "test@test.com", password_digest: "t3s7", role: 2, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-
+        @user_1 = User.create!(email: "test@test.com", password_digest: "t3s7", role: 2, active: true, name: "Testy McTesterson")
+        address = @user_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user_1)
       end
 
@@ -248,10 +249,12 @@ RSpec.describe "Restricted Navigation" do
   context "As a Visitor" do
     describe 'I see 404s' do
       before :each do
-        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-        @order = create(:order, user: @user, status: 1)
+        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+        address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+        @order = create(:order, user: @user, status: 1, user_address: address)
 
         @merchant = create(:user, role: 1)
+        @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         @item = create(:item, user: @merchant)
 
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(nil)
@@ -307,10 +310,12 @@ RSpec.describe "Restricted Navigation" do
   context "As a Default User" do
     describe 'I see 404s' do
       before :each do
-        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-        @order = create(:order, user: @user, status: 1)
+        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+        address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+        @order = create(:order, user: @user, status: 1, user_address: address)
 
         @merchant = create(:user, role: 1)
+        @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         @item = create(:item, user: @merchant)
 
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
@@ -352,10 +357,12 @@ RSpec.describe "Restricted Navigation" do
   context "As a Merchant" do
     describe 'I see 404s' do
       before :each do
-        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-        @order = create(:order, user: @user, status: 1)
+        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+        address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+        @order = create(:order, user: @user, status: 1, user_address: address)
 
         @merchant = create(:user, role: 1)
+        @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         @item = create(:item, user: @merchant)
 
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
@@ -400,14 +407,16 @@ RSpec.describe "Restricted Navigation" do
 
     describe 'I see 404s' do
       before :each do
-        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson", address: "123 Test St", city: "Testville", state: "Test", zip: "01234")
-        @order = create(:order, user: @user, status: 1)
+        @user = User.create!(email: "test@test.com", password_digest: "t3s7", role: 0, active: true, name: "Testy McTesterson")
+        address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+        @order = create(:order, user: @user, status: 1, user_address: address)
 
         @merchant = create(:user, role: 1)
+        @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         @item = create(:item, user: @merchant)
 
         @admin = create(:user, role: 2)
-
+        @admin.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
       end
 
