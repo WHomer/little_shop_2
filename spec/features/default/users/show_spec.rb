@@ -9,6 +9,17 @@ RSpec.describe 'User show page', type: :feature do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
       end
 
+      it 'has does not have a link if an order is placed' do
+        order_1 = @user.orders.create!(status: 2, user_address: @address)
+        
+        visit profile_path
+
+        within ".address-#{@user.user_addresses.first.id}" do
+          expect(page).to_not have_button("Remove Address")
+        end
+
+      end
+
       it 'has a link to add a new address' do
         visit profile_path
 
@@ -19,6 +30,7 @@ RSpec.describe 'User show page', type: :feature do
       end
 
       it 'has a link to remove a address' do
+        
         visit profile_path
         
         within ".address-#{@user.user_addresses.first.id}" do

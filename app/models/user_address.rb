@@ -11,4 +11,8 @@ class UserAddress < ApplicationRecord
                         :zip_code,
                         :phone_number
 
+
+  def address_orders
+    orders.where(status: :shipped)
+  end
 end
