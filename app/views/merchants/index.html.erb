@@ -1,71 +1,129 @@
-<h1>Merchants</h1>
-
-<h4>Top 3</h4>
-<% @top_merchants.each do |merchant| %>
-  <section class ='most-sold'>
-    <p><%= merchant.name %></p>
-    <p>Revenue: <%= number_to_currency(merchant.revenue) %></p>
-  </section>
-<% end %>
-<h4>Fastest</h4>
-<% @fastest_merchants.each do |merchant| %>
-  <section class='fastest'>
-    <p><%= merchant.name %></p>
-    <p>Time Before Shipping: <%= (/.+?(?=days)/).match(merchant.fulfillment_time) %> Days</p>
-  </section>
-<% end %>
-<h4>Slowest</h4>
-<% @slowest_merchants.each do |merchant| %>
-  <section class='slowest'>
-    <p><%= merchant.name %></p>
-    <p>Time Before Shipping: <%= (/.+?(?=days)/).match(merchant.fulfillment_time) %> Days</p>
-  </section>
-<% end %>
-<h4>Most Ordered From States</h4>
-<% @top_3_states_by_order.each do |orders| %>
-  <section class='top-states'>
-    <p><%= orders.state_province %></p>
-    <p>Orders: <%= orders.total_ordered %></p>
-  </section>
-<% end %>
-<h4>Most Ordered From Cities</h4>
-<% @top_3_cities_by_order.each do |orders| %>
-  <section class='top-cities'>
-    <p><%= orders.city %>, <%= orders.state_province %></p>
-    <p>Orders: <%= orders.count %></p>
-  </section>
-<% end %>
-<h4>Biggest Orders</h4>
-<% @biggest_orders.each do |order| %>
-  <section class='top-orders'>
-    <p>Seller: <%= order.user.name %></p>
-    <p>Ship Date: <%= order.updated_at.strftime("%B %d, %Y") %></p>
-    <p>Item Count: <%= order.count %></p>
-  </section>
-<% end %>
-<section class="card-group">
-  <% @merchants.each do |merchant| %>
-    <section id="merchant-<%= merchant.id %>">
-      <div class="card" style="width: 18rem;">
-        <div class="card-header text-center">
-          <% if current_admin? %>
-            <%=link_to merchant.name, "/admin/merchants/#{merchant.id}" %>
-          <% else %>
-            <%= merchant.name %>
+<div class="container">
+  <h1>Merchants</h1>
+  <div class="row ">
+    <div class="col-md-4 align-items-stretch">
+      <div class="card h-100">
+        <div class="card-header">
+          <h4>Top 3</h4>
+        </div>
+        <div class="card-body">
+          <% @top_merchants.each do |merchant| %>
+            <section class ='most-sold'>
+              <p><%= merchant.name %></p>
+              <p>Revenue: <%= number_to_currency(merchant.revenue) %></p>
+            </section>
           <% end %>
         </div>
-        <ul class="list-group list-group-flush">
-          <% if false %>
-          <li class="list-group-item text-center">Location: <%= merchant.city %>, <%= merchant.state %></li>
-          <% end %>
-          <li class="list-group-item text-center">Joined: <%= merchant.created_at.strftime("%B %d, %Y") %></li>
-          <% if current_admin? && merchant.active? %>
-            <li class="list-group-item text-center"><%= link_to "Disable", "/admin/merchant/disable/#{merchant.id}", :method=> :patch %></li>
-          <% elsif current_admin? && !merchant.active? %>
-            <li class="list-group-item text-center"><%= link_to "Enable", "/admin/merchant/enable/#{merchant.id}", :method=> :patch %></li>
-          <% end %>
-        </ul>
       </div>
-    </section>
-  <% end %>
-</section>
+    </div>
+
+    <div class="col-md-4 align-items-stretch">
+      <div class="card h-100">
+        <div class="card-header">
+      <h4>Fastest</h4>
+        </div>
+        <div class="card-body">
+          <% @fastest_merchants.each do |merchant| %>
+            <section class='fastest'>
+              <p><%= merchant.name %></p>
+              <p>Time Before Shipping: <%= (/.+?(?=days)/).match(merchant.fulfillment_time) %> Days</p>
+            </section>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 align-items-stretch">
+      <div class="card h-100">
+        <div class="card-header">
+          <h4>Slowest</h4>
+        </div>
+        <div class="card-body">
+          <% @slowest_merchants.each do |merchant| %>
+            <section class='slowest'>
+              <p><%= merchant.name %></p>
+              <p>Time Before Shipping: <%= (/.+?(?=days)/).match(merchant.fulfillment_time) %> Days</p>
+            </section>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 align-items-stretch">
+      <div class="card h-100">
+        <div class="card-header">
+          <h4>Most Ordered From States</h4>
+        </div>
+        <div class="card-body">
+          <% @top_3_states_by_order.each do |orders| %>
+            <section class='top-states'>
+              <p><%= orders.state_province %></p>
+              <p>Orders: <%= orders.total_ordered %></p>
+            </section>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 align-items-stretch">
+      <div class="card h-100">
+        <div class="card-header">
+          <h4>Most Ordered From Cities</h4>
+        </div>
+        <div class="card-body">
+          <% @top_3_cities_by_order.each do |orders| %>
+            <section class='top-cities'>
+              <p><%= orders.city %>, <%= orders.state_province %></p>
+              <p>Orders: <%= orders.count %></p>
+            </section>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 align-items-stretch">
+      <div class="card h-100">
+        <div class="card-header">
+          <h4>Biggest Orders</h4>
+        </div>
+        <div class="card-body">
+          <% @biggest_orders.each do |order| %>
+            <section class='top-orders'>
+              <p>Seller: <%= order.user.name %></p>
+              <p>Ship Date: <%= order.updated_at.strftime("%B %d, %Y") %></p>
+              <p>Item Count: <%= order.count %></p>
+            </section>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="card-group">
+    <% @merchants.each do |merchant| %>
+      <section id="merchant-<%= merchant.id %>">
+        <div class="card" style="width: 18rem;">
+          <div class="card-header text-center">
+            <% if current_admin? %>
+              <%=link_to merchant.name, "/admin/merchants/#{merchant.id}" %>
+            <% else %>
+              <%= merchant.name %>
+            <% end %>
+          </div>
+          <ul class="list-group list-group-flush">
+            <% if false %>
+            <li class="list-group-item text-center">Location: <%= merchant.city %>, <%= merchant.state %></li>
+            <% end %>
+            <li class="list-group-item text-center">Joined: <%= merchant.created_at.strftime("%B %d, %Y") %></li>
+            <% if current_admin? && merchant.active? %>
+              <li class="list-group-item text-center"><%= link_to "Disable", "/admin/merchant/disable/#{merchant.id}", :method=> :patch %></li>
+            <% elsif current_admin? && !merchant.active? %>
+              <li class="list-group-item text-center"><%= link_to "Enable", "/admin/merchant/enable/#{merchant.id}", :method=> :patch %></li>
+            <% end %>
+          </ul>
+        </div>
+      </section>
+    <% end %>
+  </section>
+
+</div>
