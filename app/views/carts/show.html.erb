@@ -52,6 +52,14 @@
 </table>
 <% if !current_user.nil? && !current_admin? && !current_merchant? %>
   <div class="row">
+    <% if current_user.user_addresses.length == 0 %>
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h3>Please add an Address to Checkout</h3>
+        <%= link_to "Add Address", new_profile_address_path %>
+      </div>
+      <div class="col-md-4"></div>
+    <% end %>
     <% current_user.user_addresses.each do |address| %>
     <div class="col-md-4">
       <div class="card-body">

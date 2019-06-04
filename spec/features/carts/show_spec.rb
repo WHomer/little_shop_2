@@ -364,4 +364,45 @@ describe 'As a registered user' do
       end
     end
   end
+  describe 'test no addresses' do
+    it 'has no address' do
+      @user = create(:user, password: 'password')
+      @address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+      @merchant = create(:user, name: "Merchant", role: 1)
+      @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+      @item_1 = create(:item, user: @merchant)
+      @item_2 = create(:item, user: @merchant)
+      @item_3 = create(:item, user: @merchant)
+
+      visit login_path
+
+      fill_in :email, with: @user.email
+      fill_in :password, with: 'password'
+      click_button 'Login'
+
+      visit items_path
+
+      within "#item-#{@item_1.id}" do
+        click_link "Add To Cart"
+      end
+
+      within "#item-#{@item_2.id}" do
+        click_link "Add To Cart"
+        click_link "Add To Cart"
+      end
+
+      within "#item-#{@item_3.id}" do
+        click_link "Add To Cart"
+        click_link "Add To Cart"
+        click_link "Add To Cart"
+      end
+
+      @address.destroy
+
+      visit carts_path
+
+      expect(page).to have_content("Please add an Address to Checkout")
+      expect(page).to have_link("Add Address")
+    end
+  end
 end
