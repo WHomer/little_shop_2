@@ -1,7 +1,9 @@
 class Default::UserAddressesController < Default::BaseController
   def destroy
     @address = UserAddress.find_by(id: params[:id])
-    if @address.destroy
+    if @address.orders
+      flash[:notice] = "#{@address.nickname} has orders and can't be removed."
+    elsif @address.destroy
       flash[:notice] = "#{@address.nickname} has been removed."
     end
     redirect_to profile_path
@@ -13,8 +15,9 @@ class Default::UserAddressesController < Default::BaseController
 
   def update
     user = current_user
-    address = user.user_addresses.update(address_params)
-    flash[:notice] = "Address, #{address.first.nickname}, has been updated"
+    address = UserAddress.find_by(id: params[:id])
+    address.update(address_params)
+    flash[:notice] = "Address, #{address.nickname}, has been updated"
     redirect_to profile_path
   end
 

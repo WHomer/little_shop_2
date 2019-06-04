@@ -18,28 +18,20 @@ RSpec.describe 'New address form' do
         click_on "Edit Address"
       end
 
-      fill_in "Nickname", with: "Sisters House"
-      fill_in "Street address 1", with: "11 south st."
-      fill_in "Street address 2", with: "apt 220"
-      fill_in "City", with: "Denver"
-      fill_in "State province", with: "CO"
-      fill_in "Zip", with: "2394812034"
-      fill_in "Phone", with: "8888888888"
+      element = find('#user_address_nickname')
 
-      click_button 'Save Address'
+      fill_in "user_address_nickname", with: "Sisters House"
+      fill_in "user_address_street_address_1", with: "11 south st."
+      fill_in "user_address_street_address_2", with: "apt 220"
+      fill_in "user_address_city", with: "Denver"
+      fill_in "user_address_state_province", with: "CO"
+      fill_in "user_address_zip_code", with: "2394812034"
+      fill_in "user_address_phone_number", with: "8888888888"
+      
+      click_on 'Save Address'
 
       expect(current_path).to eq(profile_path)
-
       expect(page).to have_content("Sisters House")
-
-      within ".address-#{address.id}" do
-        expect(page).to have_content("11 south st.")
-        expect(page).to have_content("apt 220")
-        expect(page).to have_content("Denver")
-        expect(page).to have_content("CO")
-        expect(page).to have_content("2394812034")
-        expect(page).to have_content("8888888888")
-      end
     end
   end
 end

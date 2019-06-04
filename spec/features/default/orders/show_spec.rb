@@ -29,6 +29,14 @@ RSpec.describe 'As a Registered User', type: :feature do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
 
+    it 'should shoe the option to change addresses' do
+      o1 = create(:order, user: @user, user_address: @address)
+
+      visit profile_order_path(o1)
+
+      expect(page).to have_link("Use as Ship To")
+    end
+
     it 'Has all the information for the Order' do
       visit profile_order_path(@order_1)
 

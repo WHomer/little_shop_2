@@ -1,4 +1,12 @@
 class Default::OrdersController < Default::BaseController
+  def update
+    order = Order.find_by(id: params[:id])
+    order.update(user_address_id: params[:address])
+    flash[:notice] = "Order #{order.id} shipping address has been updated."
+    
+    redirect_to profile_order_path
+  end
+
   def index
     @user = current_user
     @orders = @user.orders
@@ -21,7 +29,6 @@ class Default::OrdersController < Default::BaseController
   end
 
   def create
-    # require 'pry'; binding.pry
     cart = Cart.new(session[:cart])
     if cart.contents.empty?
       carts_path
