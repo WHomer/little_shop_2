@@ -17,7 +17,6 @@ RSpec.describe 'User show page', type: :feature do
         within ".address-#{@user.user_addresses.first.id}" do
           expect(page).to_not have_button("Remove Address")
         end
-
       end
 
       it 'has a link to add a new address' do

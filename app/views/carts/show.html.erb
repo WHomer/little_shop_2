@@ -51,6 +51,32 @@
   </tbody>
 </table>
 <% if !current_user.nil? && !current_admin? && !current_merchant? %>
-  <h5 class='text-center'><%= link_to "Checkout", profile_orders_path, method: :post, style:"font-size:35px;" %></h5>
+  <div class="row">
+    <% current_user.user_addresses.each do |address| %>
+    <div class="col-md-4">
+      <div class="card-body">
+        <div class="card border-default">
+          <div class="address-<%=address.id%>">
+            <div class="card-header">
+              <%= address.nickname %>
+            </div>
+            <div class="card-body">
+              <p>Address Line 1: <%= address.street_address_1 %></p>
+              <p>Address Line 2: <%= address.street_address_2 %></p>
+              <p>City: <%= address.city %></p>
+              <p>State: <%= address.state_province %></p>
+              <p>Zip Code: <%= address.zip_code %></p>
+              <p>Phone Number: <%= address.phone_number %></p>
+            </div>
+            <div class="text-center">
+              <%= link_to "Checkout", profile_orders_path(address.id), method: :post %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
 <% end %>
 <h5 class='text-center'><%= link_to "Clear Cart", carts_path, method: :delete %></h5>
+

@@ -130,7 +130,7 @@ RSpec.describe 'As a visitor' do
     end
   end
 
-  describe 'when i have items in my card' do
+  describe 'when i have items in my cart' do
     before :each do
       merchant_1 = create(:user)
       merchant_1.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
@@ -302,10 +302,10 @@ describe 'As a registered user' do
   describe 'when viewing my cart with items in it' do
     before :each do
       @user = create(:user, password: 'password')
-      address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
+      @address = @user.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
       @merchant = create(:user, name: "Merchant", role: 1)
       @merchant.user_addresses.create!(nickname: "nickname_1", street_address_1: "street number 1", street_address_2: "apt 1", city: 'city 1', state_province: 'state 1', zip_code: '123123', phone_number: 'phone 1' )
-      @order_1 = create(:order, user: @user, user_address: address)
+      @order_1 = create(:order, user: @user, user_address: @address)
       @item_1 = create(:item, user: @merchant)
       @item_2 = create(:item, user: @merchant)
       @item_3 = create(:item, user: @merchant)
@@ -337,7 +337,11 @@ describe 'As a registered user' do
     end
 
     it 'allows me to checkout' do
-      click_link 'Checkout'
+
+      within ".address-#{@address.id}" do
+        click_link 'Checkout'
+      end
+
       order = Order.last
       expect(order.status).to eq("pending")
       expect(order.user).to eq(@user)
