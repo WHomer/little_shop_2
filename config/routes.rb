@@ -22,7 +22,14 @@ Rails.application.routes.draw do
   get '/profile/edit', to: 'default/users#edit'
   patch '/profile/edit', to: 'default/users#update'
   scope module: :default, path: :profile do
-    resources :orders, only: [:create, :show, :index, :destroy, :edit, :update], as: :profile_orders
+    # resources :orders, only: [:create, :show, :index, :destroy, :edit, :update], as: :profile_orders
+    get '/orders', to: 'orders#index', as: :profile_orders
+    get '/orders/:id', to: 'orders#show', as: :profile_order
+    get '/orders/:id/edit', to: 'orders#edit', as: :edit_profile_order
+    patch '/orders/:id', to: 'orders#update'
+    delete '/orders/:id', to: 'orders#destroy'
+    post '/orders', to: 'orders#create', as: :new_profile_order
+
     resources :user_addresses, only: [:update, :edit, :new, :create, :destroy], as: :profile_addresses
   end
 
