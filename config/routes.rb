@@ -38,8 +38,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :users, only: [:index, :show]
-    
+    # resources :users, only: [:index, :show]
+    get '/users', to: 'users#index', as: :users
+    get '/user/:id', to: 'users#show', as: :user
+
     get '/dashboard', to: 'users#dashboard'
     get '/merchants/:id', to: 'merchants#show', as: :merchant
     patch '/merchant/edit', to: 'merchants#edit'
