@@ -13,6 +13,7 @@ class UserAddress < ApplicationRecord
 
 
   def address_orders
+    # require 'pry'; binding.pry
     orders.where(status: :shipped)
   end
 end

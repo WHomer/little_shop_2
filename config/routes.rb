@@ -39,11 +39,13 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users, only: [:index, :show]
+    
     get '/dashboard', to: 'users#dashboard'
     get '/merchants/:id', to: 'merchants#show', as: :merchant
     patch '/merchant/edit', to: 'merchants#edit'
     patch '/merchant/enable/:id', to: 'merchants#enable'
     patch '/merchant/disable/:id', to: 'merchants#disable'
-    resources :orders, only: [:update]
+    patch '/orders/:id', to: 'orders#update', as: :order
+    # resources :orders, only: [:update]
   end
 end

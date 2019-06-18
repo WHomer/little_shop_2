@@ -84,6 +84,7 @@ RSpec.describe User, type: :model do
       order_item_10 = OrderItem.create!(item: item_5, order: order_1, quantity: 11, price: item_5.price, fulfilled: false, updated_at: Time.now + 70)
       order_item_11 = OrderItem.create!(item: item_6, order: order_5, quantity: 12, price: item_6.price, fulfilled: false, updated_at: Time.now + 70)
 
+      # require 'pry'; binding.pry
       expect(User.top_3_merchants_by_sales[0]).to eq(merchant_1)
       expect(User.top_3_merchants_by_sales[1]).to eq(merchant_2)
       expect(User.top_3_merchants_by_sales[2]).to eq(merchant_3)

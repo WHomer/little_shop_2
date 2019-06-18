@@ -1,10 +1,12 @@
 class Default::UserAddressesController < Default::BaseController
   def destroy
     @address = UserAddress.find_by(id: params[:id])
-    if @address.orders
-      flash[:notice] = "#{@address.nickname} has orders and can't be removed."
-    elsif @address.destroy
+
+    if @address.orders == []
+      @address.destroy
       flash[:notice] = "#{@address.nickname} has been removed."
+    else
+      flash[:notice] = "#{@address.nickname} has orders and can't be removed."
     end
     redirect_to profile_path
   end
