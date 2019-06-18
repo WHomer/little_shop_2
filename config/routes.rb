@@ -32,11 +32,20 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'merchants/orders#index'
   scope module: 'merchants', path: 'dashboard', as: :dashboard do
-    resources :items, only: [:index, :new, :create, :edit, :update, :destroy]
     # resources :order_items, only: [:update]
     patch '/order_item/:id', to: 'order_items#update', as: :order_item
     # resources :orders, only: [:show]
     get '/order/:id', to: 'orders#show', as: :order
+  end
+
+  scope module: 'merchants', path: 'dashboard' do
+    # resources :items, only: [:index, :new, :create, :edit, :update, :destroy]
+    get '/items', to: 'items#index', as: :dashboard_items
+    get '/items/new', to: 'items#new', as: :new_dashboard_item
+    post '/items', to: 'items#create' 
+    get '/items/:id/edit', to: 'items#edit', as: :edit_dashboard_item
+    patch '/items/:id', to: 'items#update', as: :dashboard_item
+    delete '/items/:id', to: 'items#destroy'
   end
 
   namespace :admin do
