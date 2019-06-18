@@ -33,7 +33,8 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'merchants/orders#index'
   scope module: 'merchants', path: 'dashboard', as: :dashboard do
     resources :items, only: [:index, :new, :create, :edit, :update, :destroy]
-    resources :order_items, only: [:update]
+    # resources :order_items, only: [:update]
+    patch '/order_item/:id', to: 'order_items#update', as: :order_item
     # resources :orders, only: [:show]
     get '/order/:id', to: 'orders#show', as: :order
   end
