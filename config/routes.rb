@@ -28,9 +28,14 @@ Rails.application.routes.draw do
     get '/orders/:id/edit', to: 'orders#edit', as: :edit_profile_order
     patch '/orders/:id', to: 'orders#update'
     delete '/orders/:id', to: 'orders#destroy'
-    post '/orders', to: 'orders#create', as: :new_profile_order
+    post '/orders', to: 'orders#create'
 
-    resources :user_addresses, only: [:update, :edit, :new, :create, :destroy], as: :profile_addresses
+    # resources :user_addresses, only: [:update, :edit, :new, :create, :destroy], as: :profile_addresses
+    get '/user_addresses/:id/edit', to: 'user_addresses#edit', as: :edit_profile_address
+    patch '/user_addresses/:id', to: 'user_addresses#update', as: :profile_address
+    delete '/user_addresses/:id', to: 'user_addresses#destroy'
+    post '/user_addresses', to: 'user_addresses#create', as: :profile_addresses
+    get '/user_addresses/new', to: 'user_addresses#new', as: :new_profile_address
   end
 
 
